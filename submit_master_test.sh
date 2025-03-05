@@ -37,13 +37,13 @@ if [ ! -d "$WORKING_DIR" ]; then
 fi
 
 # # 0. Filter out the pdb_chain_ids with unmodeled residues in the middle of the amino acid sequence
-# python -W ignore $source/pdb_preprocess/filter_unmodeled_residues.py $PDB_RAW_DIR \
+# python -W ignore $cdygen_source/pdb_preprocess/filter_unmodeled_residues.py $PDB_RAW_DIR \
 #                                                                      $INPUT_PATH \
 #                                                                      $filtered_pdb_list \
 #                                                                      $outlier_pdb_list >> $WORKING_DIR/prep.log
 
 # 1. Run HTMD to generate conformational ensemble of the given PDB files
-bash $source/submit_htmd_buildSystem.sh $WORKING_DIR \
+bash $cdygen_source/submit_htmd_buildSystem.sh $WORKING_DIR \
                                         $filtered_pdb_list \
                                         $PDB_RAW_DIR \
                                         $PDB_EDIT_DIR \
@@ -52,7 +52,7 @@ bash $source/submit_htmd_buildSystem.sh $WORKING_DIR \
                                         $prod_t >> $WORKING_DIR/prep.log
 
 # # 2. Run CLoNe to cluster the conformational ensemble into representative conformers
-# bash $source/submit_clone.sh /mnt/e/masif_docker/pmp/htmd/lists/pmp_low_auc.txt
+# bash $cdygen_source/submit_clone.sh /mnt/e/masif_docker/pmp/htmd/lists/pmp_low_auc.txt
 
 # clean up
 # rm -fr *.cpt *.gro \#* *.tpr
