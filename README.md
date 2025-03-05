@@ -3,7 +3,7 @@ Conformational Dynamics Generator. Run HTMD and CLoNe to generate multiple repre
 
 ## Quickstart
 ```sh
-git clone -b main https://github.com/byungukP/CDyGen.git
+git clone -b main https://github.com/byungukP/cdygen.git
 cd cdygen
 bash submit_master.sh ${INPUT_LIST_PATH} ${PDB_RAW_DIR} ${equil_t} ${prod_t}
 # for example
