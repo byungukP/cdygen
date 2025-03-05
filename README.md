@@ -11,7 +11,7 @@ bash submit_master.sh ${INPUT_LIST_PATH} ${PDB_RAW_DIR} ${equil_t} ${prod_t}
 - PDB_RAW_DIR: path to the directory that contains pdb files with format of "{PDB}_{CHAIN}" for the format
 - equilt_t: equilibration time in ns
 - prod_t: production time in ns
-- ex)
+ex)
 ```sh
 bash submit_master.sh data/lists/pmp_5cv_trainset_high_auc_100.txt data/01-benchmark_pdbs 1 10
 ```
