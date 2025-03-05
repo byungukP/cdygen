@@ -1,0 +1,2 @@
+# CDyGen
+Conformational Dynamics Generator
