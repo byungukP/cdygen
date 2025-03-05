@@ -1,0 +1,47 @@
+# README
+
+Author: ByungUk Park
+Date: 9/20/2024
+
+Scripts for HTMD system preparation, equilibration and production run parameters, running the actual HTMD simulations, preprocessing the HTMD-generated trajectories (e.g., PBC off, protein centering, rotational & translational fitting w/ reference structure.pdb), separating frames (snapshots) from the HTMD-generated trajectories (xtc), and related analysis tools
+
+1. sys_prep
+- scripts for preparing systems, parameters, forcefields, and scripts for HTMD simulations (including energy minimization, equilibration, production)
+
+Codes)
+- submit_htmd_buildSystem.sh
+	- master submit script for system preparation for HTMD simulations
+	- then, preprocess the trajectories for PBC condition off, protein centering, and rotational + translational 	  fitting of the system based on the reference structure.pdb
+	- takes txt file of list of pmp PDB_CHAIN_ID as input
+- htmd_buildSystem_simple_multiple.py
+	- source code for HTMD system preparation & simulation run
+	- check parameters (e.g., temeprature, runtime, timeunits, etc) of sys_equil(), sys_prod() functions for 	  parameter controls
+- traj_preprocessing.sh
+	- script that preprocess the HTMD-generated trajectories (proteins already wrapped with water molecules)
+	- centering the protein in the PBC box, removing PBC condition, rotationally & translationally fitting the 	  protein structure based on the given reference structure.pdb
+	- end product (wrapped, no PBC, centered, rot+trans fitted) trajectories can be used for automatic 	  	  clusterings (e.g., CLoNe)
+- pdb_preprocess/submit_pdb_edit.sh
+	- edit PDB files with non-canonical residues: replace non-canonical residue names to canonical ones for uninterrupted high-throughput protonation of the structures without using aceprep (paid SW from Acellera)
+	- need to be updated with which non-canonical residues should be edited
+	- "To protonate non-canonical aminoacids you need the aceprep library. Please contact Acellera info@acellera.com for more information or set ignore_ns_errors=True to ignore non-canonical residues in the protonation (this will leave the residues unprotonated)."
+
+trash)
+- htmd_wrap_traj.py
+	- script for wrapping trajectories
+	- no need to run additionally after submit_htmd_buildSystem.sh since master submit code already handles 	  wrapping the protein with water molecules
+- htmd_buildSystem_simple.py, sys_prep.py ---> legacy codes....
+
+2. separate_traj_frame
+- scripts that extract frames of the given trajectories to the PDB files
+- frame PDB files are used for praparing mesh & fingerprint descriptors
+- used for extracting frames of trajectory of each representative cluster from whole MD simulation run
+
+Codes)
+- submit_separateFrame.sh
+	- master submit script for frame extraction
+	- $ bash submit_separateFrame.sh input_list.txt
+	- input_list.txt: list of PDB_CHAIN_IDs
+- separateFrame.py
+	- source code for frame extraction
+	- mostly using htmd (python package developed by HTMD/ACEMD developers)
+
