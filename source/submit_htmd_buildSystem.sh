@@ -38,7 +38,7 @@ python -W ignore $cdygen_source/sys_prep/htmd_buildSystem_simple_multiple.py $WO
                                                                              $prod_t
 
 # 3. Trajectory preprocessing: wrapping, centering, PBC off, rational + tranlsational fitting
-echo ======== Trajectory Preprocessing ========
+echo -e "======== Trajectory Preprocessing ========\n"
 bash $cdygen_source/sys_prep/traj_preprocessing.sh $WORKING_DIR \
                                                    $INPUT_PATH
 

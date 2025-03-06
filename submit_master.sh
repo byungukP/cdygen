@@ -56,6 +56,6 @@ bash $cdygen_source/submit_htmd_buildSystem.sh $WORKING_DIR \
 
 # clean up
 # rm -fr *.cpt *.gro \#* *.tpr
-# rm -fr $PDB_EDIT_DIR
+rm -fr $PDB_EDIT_DIR
 
 exit;
