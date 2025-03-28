@@ -33,7 +33,8 @@ prod_time   = float(sys.argv[6])
 
 ## add runtime, temperature, etc. as input arguments later
 
-ptn_caps = {'P': ['first ACE', 'last CT2']}
+ptn_caps = {'P': ['first NTER', 'last CTER']}
+# ptn_caps = {'P': ['first ACE', 'last CT2']}
 
 # Mapping from various residue caps to charmm patches
 R"""
@@ -71,7 +72,11 @@ def sys_prep(WORKING_DIR, PDB_DIR, PDB_ID, PRM_DIR):
     print(f"====> auto segmentation done")
     mol_solv = solvate(mol_seg,pad=10)
     print(f"====> system solvation done")
-    mol_charmm = charmm.build(mol_solv, outdir=f'{WORKING_DIR}/{PDB_ID}/build-charmm',)
+    # mol_charmm = charmm.build(mol_solv, outdir=f'{WORKING_DIR}/{PDB_ID}/build-charmm',)   # for neutral N-terminus and C-terminus
+    mol_charmm = charmm.build(mol_solv,
+                              caps=ptn_caps,
+                              outdir=f'{WORKING_DIR}/{PDB_ID}/build-charmm',
+                              )
     print(f"====> CHARMM36 forcefield applied")
     # CHARMM36 parameters update from forcefield source directory
     shutil.copy(PRM_DIR, f'{WORKING_DIR}/{PDB_ID}/build-charmm/parameters')
