@@ -22,14 +22,18 @@ while IFS= read -r line; do
     traj_dir=${WORKING_DIR}/${PDB_CHAIN_ID}/prod
     # remove PBC condition, center the protein
     gmx trjconv -f ${traj_dir}/output_wrapped.xtc \
-                    -s ${traj_dir}/structure.pdb \
-                    -pbc mol -center \
-                    -o ${traj_dir}/output_wrapped_centered.xtc <<< $'Protein\nSystem'
+                -s ${traj_dir}/structure.pdb \
+                -pbc mol -center \
+                -o ${traj_dir}/output_wrapped_centered.xtc <<< $'Protein\nSystem'
     # rotational + translational fitting & center the protein
     gmx trjconv -f ${traj_dir}/output_wrapped_centered.xtc \
-                    -s ${traj_dir}/structure.pdb \
-                    -fit rot+trans -center \
-                    -o ${traj_dir}/output_wrapped_centered_fit.xtc <<< $'Protein\nProtein\nSystem'
+                -s ${traj_dir}/structure.pdb \
+                -fit rot+trans -center \
+                -o ${traj_dir}/output_wrapped_centered_fit.xtc <<< $'Protein\nProtein\nSystem'
+    # clean up
+    rm -f ${traj_dir}/output.xtc \
+          ${traj_dir}/output_wrapped.xtc \
+          ${traj_dir}/output_wrapped_centered.xtc
 done < "$INPUT_PATH"
 
 
