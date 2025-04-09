@@ -11,7 +11,6 @@
 PDB_DIR=$1
 OUTPUT_DIR=$2
 INPUT_PATH=$3
-# PDB_CHAIN_ID=3DYT_A
 
 ##################
 # Execute script #
@@ -31,13 +30,22 @@ while IFS= read -r PDB_ID; do
     echo "Noncanonical Residues Processing: $PDB_CHAIN_ID"
     # update PDB file
     # non-canonical residues --> canonical residues
+    sed 's/HETATM/ATOM  /g' $PDB_DIR/$PDB_CHAIN_ID.pdb > $OUTPUT_DIR/$PDB_CHAIN_ID.pdb
 
     ## 1. MSE
-    sed 's/HETATM/ATOM  /g' $PDB_DIR/$PDB_CHAIN_ID.pdb > $OUTPUT_DIR/$PDB_CHAIN_ID.pdb
     sed -i 's/MSE/MET/g' $OUTPUT_DIR/$PDB_CHAIN_ID.pdb
     sed -i 's/SE   MET/ SD  MET/g' $OUTPUT_DIR/$PDB_CHAIN_ID.pdb
     sed -i 's/    SE/     S/g' $OUTPUT_DIR/$PDB_CHAIN_ID.pdb
-    ## 2. ??? (add more if needed)
+
+    ## 2. CMT
+    sed -i '/OXT CMT/d' $OUTPUT_DIR/$PDB_CHAIN_ID.pdb
+    sed -i '/C1  CMT/d' $OUTPUT_DIR/$PDB_CHAIN_ID.pdb
+    sed -i '/H13 CMT/d' $OUTPUT_DIR/$PDB_CHAIN_ID.pdb
+    sed -i '/H12 CMT/d' $OUTPUT_DIR/$PDB_CHAIN_ID.pdb
+    sed -i '/H11 CMT/d' $OUTPUT_DIR/$PDB_CHAIN_ID.pdb    
+    sed -i 's/CMT/CYS/g' $OUTPUT_DIR/$PDB_CHAIN_ID.pdb
+
+    ## 3. ??? (add more if needed)
 
 done < <(tr -d '\r' < $INPUT_PATH)
 
