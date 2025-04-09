@@ -22,6 +22,7 @@ CLONE_DIR=data/02-benchmark_cluster
 equil_t=$3                            # ns
 prod_t=$4                             # ns
 pdc_dist=4                            # param for cluster distance cutoff, default 4
+traj_type=_centered_fit               # param for trajectory type: _centered_fit, _wrapped_centered_fit
 
 # function
 function check_dir ()
@@ -64,6 +65,7 @@ bash $cdygen_source/submit_htmd_buildSystem.sh $HTMD_DIR \
 check_dir $CLONE_RAW_DIR
 bash $cdygen_source/submit_clone.sh $filtered_pdb_list \
                                     $HTMD_DIR \
+                                    $traj_type \
                                     $CLONE_RAW_DIR \
                                     $pdc_dist >> $CLONE_RAW_DIR/log.txt
 

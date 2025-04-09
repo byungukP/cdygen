@@ -155,8 +155,8 @@ with open(f"{input_file}") as f:
         sys_prep(WORKING_DIR, PDB_DIR, PDB_ID, PRM_DIR)
         sys_equil(WORKING_DIR, PDB_ID, PRM_DIR, equilt_t=equil_time)
         sys_prod(WORKING_DIR, PDB_ID, PRM_DIR, prod_t=prod_time)
-        output_dir = f"{WORKING_DIR}/{PDB_ID}/prod"
-        traj_wrap(output_dir, "protein")
+        # output_dir = f"{WORKING_DIR}/{PDB_ID}/prod"
+        # traj_wrap(output_dir, "protein")
         
         toc = timeit.default_timer()
         print(f"====> Total Time: {toc - tic:.2f} sec\n\n")

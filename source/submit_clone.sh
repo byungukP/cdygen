@@ -17,9 +17,9 @@ export PYTHONPATH=$PYTHONPATH:$cluster_source
 
 INPUT=$1                                                                 # Path to a list of pdb_chain_id or a single pdb_chain_id
 HTMD_DIR=$2
-OUTPUT_DIR=$3                                                            # Directory path to save results. Default is current directory
-pdc_dist=$4                                                              # param for cluster distance cutoff, default 4
-traj_type=_wrapped_centered_fit                                          # trajectory file type, default _wrapped_centered_fit.xtc
+traj_type=$3                                          # trajectory file type, default _wrapped_centered_fit.xtc
+OUTPUT_DIR=$4                                                            # Directory path to save results. Default is current directory
+pdc_dist=$5                                                              # param for cluster distance cutoff, default 4
 
 ###############
 # MAIN SCRIPT #
