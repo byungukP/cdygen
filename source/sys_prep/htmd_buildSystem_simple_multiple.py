@@ -66,18 +66,14 @@ def sys_prep(WORKING_DIR, PDB_DIR, PDB_ID, PRM_DIR):
     pdb = f"{PDB_DIR}/{PDB_ID}.pdb"
     mol = Molecule(pdb)
     mol.filter("protein")
-    print(f"====> system preparation done")
     mol_op = systemPrepare(mol)
     mol_seg = autoSegment(mol_op)
-    print(f"====> auto segmentation done")
     mol_solv = solvate(mol_seg,pad=10)
-    print(f"====> system solvation done")
     # mol_charmm = charmm.build(mol_solv, outdir=f'{WORKING_DIR}/{PDB_ID}/build-charmm',)   # for neutral N-terminus and C-terminus
     mol_charmm = charmm.build(mol_solv,
                               caps=ptn_caps,
                               outdir=f'{WORKING_DIR}/{PDB_ID}/build-charmm',
                               )
-    print(f"====> CHARMM36 forcefield applied")
     # CHARMM36 parameters update from forcefield source directory
     shutil.copy(PRM_DIR, f'{WORKING_DIR}/{PDB_ID}/build-charmm/parameters')
 
