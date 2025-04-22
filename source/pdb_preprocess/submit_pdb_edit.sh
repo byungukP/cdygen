@@ -45,7 +45,13 @@ while IFS= read -r PDB_ID; do
     sed -i '/H11 CMT/d' $OUTPUT_DIR/$PDB_CHAIN_ID.pdb    
     sed -i 's/CMT/CYS/g' $OUTPUT_DIR/$PDB_CHAIN_ID.pdb
 
-    ## 3. ??? (add more if needed)
+    ## 3. CXM
+    sed -i '/CN  CXM/d' $OUTPUT_DIR/$PDB_CHAIN_ID.pdb
+    sed -i '/ON1 CXM/d' $OUTPUT_DIR/$PDB_CHAIN_ID.pdb
+    sed -i '/ON2 CXM/d' $OUTPUT_DIR/$PDB_CHAIN_ID.pdb
+    sed -i 's/CXM/MET/g' $OUTPUT_DIR/$PDB_CHAIN_ID.pdb
+
+    ## 4. ??? (add more if needed)
 
 done < <(tr -d '\r' < $INPUT_PATH)
 
