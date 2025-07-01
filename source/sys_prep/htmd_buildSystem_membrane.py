@@ -78,7 +78,7 @@ def protein_prep(PDB_DIR, PDB_ID):
     prot_seg.reps.add(sel='segid P0', style='NewCartoon', color=1)
     return prot_seg
 
-def concat_system(memb, prot, z_offset_multiplier=16):
+def concat_system_legacy(memb, prot, z_offset_multiplier=16):
     ## center the membrane onto the protein center
     pcenter = np.mean(prot.get('coords','protein'),axis=0)
     mcenter = np.mean(memb.get('coords'),axis=0)
@@ -86,6 +86,24 @@ def concat_system(memb, prot, z_offset_multiplier=16):
     delta_v = pcenter - mcenter
     memb.moveBy((delta_v[0], delta_v[1], delta_v[2]*z_offset_multiplier))
     # print(f"====> membrane moved by {(delta_v[0], delta_v[1], delta_v[2]*16)}")
+    ## embedding
+    mol = prot.copy()
+    mol.append(memb, collisions=True)
+    return mol
+
+def concat_system(memb, prot, z_offset=10):
+    """
+    z_offset: z-component distance in angstroms btw protein and membrane.
+    """
+    ## center the membrane onto the protein center
+    pcenter = np.mean(prot.get('coords','protein'),axis=0)
+    mcenter = np.mean(memb.get('coords'),axis=0)
+    delta_v = pcenter - mcenter
+    memb.moveBy((delta_v))
+    ## move the membrane away from the protein
+    mmax = np.max(memb.get('coords'), axis=0)
+    pmin = np.min(prot.get('coords'), axis=0)
+    memb.moveBy(np.array([0, 0, (pmin[2] - mmax[2]) - z_offset]))
     ## embedding
     mol = prot.copy()
     mol.append(memb, collisions=True)
@@ -100,11 +118,11 @@ def sys_prep(WORKING_DIR, PDB_DIR, PDB_ID, PRM_DIR):
     # protein preparation
     prot = protein_prep(PDB_DIR, PDB_ID)
     # system preparation
-    mol = concat_system(memb, prot, z_offset_multiplier=16)
+    mol = concat_system(memb, prot, z_offset=10)
     # solvation
-    coord = mol.get('coords','noh and (lipids or protein)')
-    m = np.min(coord, axis=0) #+ [0, 0, -5]
-    M = np.max(coord, axis=0) #+ [0, 0, 20]
+    coord = mol.get('coords','noh and (lipids or protein)')     # 'noh' : non-hydrogen atoms
+    m = np.min(coord, axis=0)
+    M = np.max(coord, axis=0) + [0, 0, 10]                      # +1.0 nm extension in z-dim of water space
     mol_solv = solvate(mol, minmax=np.vstack((m,M)))
     # CHARMM36 forcefield application
     os.makedirs(f'{WORKING_DIR}/{PDB_ID}/build-charmm')
